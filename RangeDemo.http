@@ -1,0 +1,58 @@
+@RangeDemo_HostAddress = http://localhost:5137
+
+GET {{RangeDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+### Post null fraction, which is allowed.
+
+POST {{RangeDemo_HostAddress}}/weatherforecast/
+Content-Type: application/json
+
+{
+    "fraction": null
+}
+
+### Post without a culture, which expects '/' as separator.
+
+POST {{RangeDemo_HostAddress}}/weatherforecast/
+Content-Type: application/json
+
+{
+    "fraction": "1/5"
+}
+
+### Post with a culture, which expects ':' as separator.
+
+POST {{RangeDemo_HostAddress}}/weatherforecast/?culture=nl-NL
+Content-Type: application/json
+
+{
+    "fraction": "1:5"
+}
+
+### Model validation error: posted fraction outside allowed range.
+
+POST {{RangeDemo_HostAddress}}/weatherforecast/?culture=nl-NL
+Content-Type: application/json
+
+{
+    "fraction": "-1:5"
+}
+
+### Model binding error: not a valid fraction.
+
+POST {{RangeDemo_HostAddress}}/weatherforecast/?culture=nl-NL
+Content-Type: application/json
+
+{
+    "fraction": "?"
+}
+
+### Model binding error: Unexpected JSON.
+
+POST {{RangeDemo_HostAddress}}/weatherforecast/?culture=nl-NL
+Content-Type: application/json
+
+{
+    "fraction": []
+}
