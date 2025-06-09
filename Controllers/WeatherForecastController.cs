@@ -28,10 +28,14 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     {
         logger.LogInformation("Incoming {Fraction}", model.Fraction?.ToString());
 
-        var fractionString = model.Fraction != null
-            ? Convert.ToString(model.Fraction, Thread.CurrentThread.CurrentCulture)
-            : "(none)";
+        if (model.Fraction != null)
+        {
+            var fractionString = model.Fraction.Format(Thread.CurrentThread.CurrentCulture);
+            var doubleValue = model.Fraction.ToDouble();
 
-        return $"Received fraction value: {fractionString}";
+            return $"Received fraction value: {fractionString}, which is approximately: {doubleValue}";
+        }
+
+        return "Received no fraction value.";
     }
 }

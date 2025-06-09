@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="RangeDemo.csproj" />
+  <Project Path="../Swashbuckle.AspNetCore/src/Swashbuckle.AspNetCore.Swagger/Swashbuckle.AspNetCore.Swagger.csproj" />
+  <Project Path="../Swashbuckle.AspNetCore/src/Swashbuckle.AspNetCore.SwaggerGen/Swashbuckle.AspNetCore.SwaggerGen.csproj" />
+  <Project Path="../Swashbuckle.AspNetCore/src/Swashbuckle.AspNetCore.SwaggerUI/Swashbuckle.AspNetCore.SwaggerUI.csproj" />
+</Solution>

@@ -76,14 +76,14 @@ public sealed class Fraction(int numerator, int denominator) : IComparable<Fract
         return $"{nameof(Fraction)}: {Numerator}/{Denominator} ~ {ToDouble()}";
     }
 
-    // Used by System.Convert.ToString
+    // Used by System.Convert.ToString, which never passes a format.
     string IFormattable.ToString(string? format, IFormatProvider? formatProvider)
     {
-        if (formatProvider is CultureInfo culture)
+        if (format == "f")
         {
-            return Format(culture);
+            return formatProvider is CultureInfo culture ? Format(culture) : Format(null);
         }
 
-        return Format(null);
+        return ToDouble().ToString(formatProvider);
     }
 }

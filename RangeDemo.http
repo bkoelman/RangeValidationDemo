@@ -1,56 +1,73 @@
-@RangeDemo_HostAddress = http://localhost:5137
 
-GET {{RangeDemo_HostAddress}}/weatherforecast/
+GET {{HOST_ADDRESS}}/weatherforecast/
 Accept: application/json
 
 ### Post null fraction, which is allowed.
 
-POST {{RangeDemo_HostAddress}}/weatherforecast/
+POST {{HOST_ADDRESS}}/weatherforecast/
 Content-Type: application/json
 
 {
     "fraction": null
 }
 
-### Post without a culture, which expects '/' as separator.
+### Post in fractional format, using dynamic separator based on selected environment.
 
-POST {{RangeDemo_HostAddress}}/weatherforecast/
+POST {{HOST_ADDRESS}}/weatherforecast/
 Content-Type: application/json
 
 {
-    "fraction": "1/5"
+    "fraction": "1{{FRACTION_SEPARATOR}}5"
 }
 
-### Post with a culture, which expects ':' as separator.
+### Post in floating-point format.
 
-POST {{RangeDemo_HostAddress}}/weatherforecast/?culture=nl-NL
+POST {{HOST_ADDRESS}}/weatherforecast/
 Content-Type: application/json
 
 {
-    "fraction": "1:5"
+    "fraction": 0.2
 }
 
 ### Model validation error: posted fraction outside allowed range.
 
-POST {{RangeDemo_HostAddress}}/weatherforecast/?culture=nl-NL
+POST {{HOST_ADDRESS}}/weatherforecast/
 Content-Type: application/json
 
 {
-    "fraction": "-1:5"
+    "fraction": "-1{{FRACTION_SEPARATOR}}5"
+}
+
+### Model validation error: posted floating-point number outside allowed range.
+
+POST {{HOST_ADDRESS}}/weatherforecast/
+Content-Type: application/json
+
+{
+    "fraction": -0.2
 }
 
 ### Model binding error: not a valid fraction.
 
-POST {{RangeDemo_HostAddress}}/weatherforecast/?culture=nl-NL
+POST {{HOST_ADDRESS}}/weatherforecast/
 Content-Type: application/json
 
 {
     "fraction": "?"
 }
 
+### Model binding error: not a valid floating-point number.
+
+POST {{HOST_ADDRESS}}/weatherforecast/
+Content-Type: application/json
+
+{
+    "fraction": 0;2
+}
+
 ### Model binding error: Unexpected JSON.
 
-POST {{RangeDemo_HostAddress}}/weatherforecast/?culture=nl-NL
+POST {{HOST_ADDRESS}}/weatherforecast/
 Content-Type: application/json
 
 {

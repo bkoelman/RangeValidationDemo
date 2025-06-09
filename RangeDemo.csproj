@@ -1,11 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <!-- Comment out the next line to prevent parsing min/max on [Range] from using the OS-level regional settings -->
-    <DefineConstants>$(DefineConstants);PARSE_RANGE_CONSTRAINTS_USING_SYSTEM_CULTURE</DefineConstants>
+    <!-- Comment out the next line to prevent parsing min/max on [Range] from using the request-based culture -->
+    <DefineConstants>$(DefineConstants);PARSE_RANGE_CONSTRAINTS_USING_CURRENT_CULTURE</DefineConstants>
+    <!-- Uncomment the next line to build Swashbuckle from source -->
+    <!-- <BuildSwashbuckleFromSource>true</BuildSwashbuckleFromSource> -->
   </PropertyGroup>
+
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources Condition="'$(BuildSwashbuckleFromSource)' != 'true'">
+      https://www.myget.org/F/domaindrivendev/api/v3/index.json;
+      https://api.nuget.org/v3/index.json
+    </RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(BuildSwashbuckleFromSource)' != 'true'">
+    <PackageReference Include="Swashbuckle.AspNetCore" Condition="'$(TargetFramework)' == 'net10.0'" Version="9.0.0-pr.3283.*" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Condition="'$(TargetFramework)' != 'net10.0'" Version="8.1.4" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(BuildSwashbuckleFromSource)' == 'true' And '$(TargetFramework)' == 'net10.0'">
+    <ProjectReference Include="..\Swashbuckle.AspNetCore\src\Swashbuckle.AspNetCore.SwaggerGen\Swashbuckle.AspNetCore.SwaggerGen.csproj" />
+    <ProjectReference Include="..\Swashbuckle.AspNetCore\src\Swashbuckle.AspNetCore.SwaggerUI\Swashbuckle.AspNetCore.SwaggerUI.csproj" />
+  </ItemGroup>
 
 </Project>

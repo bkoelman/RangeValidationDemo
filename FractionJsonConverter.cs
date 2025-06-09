@@ -26,8 +26,15 @@ public sealed class FractionJsonConverter : JsonConverter<Fraction>
                 }
             }
         }
+        else if (reader.TokenType == JsonTokenType.Number)
+        {
+            if (reader.TryGetDouble(out var value))
+            {
+                return DoubleToFractionConverter.DoubleToFraction(value);
+            }
+        }
 
-        throw new JsonException("Expected string value in JSON document.");
+        throw new JsonException("Expected string or number in JSON document.");
     }
 
     public override void Write(Utf8JsonWriter writer, Fraction value, JsonSerializerOptions options)
