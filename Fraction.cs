@@ -6,7 +6,7 @@ namespace RangeDemo;
 
 [TypeConverter(typeof(FractionTypeConverter))]
 [DebuggerDisplay("{ToString(),nq}")]
-public sealed class Fraction(int numerator, int denominator) : IComparable<Fraction>, IComparable, IFormattable
+public sealed class Fraction(int numerator, int denominator) : IComparable<Fraction>, IComparable
 {
     public int Numerator { get; } = numerator;
     public int Denominator { get; } = denominator;
@@ -74,16 +74,5 @@ public sealed class Fraction(int numerator, int denominator) : IComparable<Fract
     {
         // Intentionally returning something unparsable, this is for diagnostics only.
         return $"{nameof(Fraction)}: {Numerator}/{Denominator} ~ {ToDouble()}";
-    }
-
-    // Used by System.Convert.ToString, which never passes a format.
-    string IFormattable.ToString(string? format, IFormatProvider? formatProvider)
-    {
-        if (format == "f")
-        {
-            return formatProvider is CultureInfo culture ? Format(culture) : Format(null);
-        }
-
-        return ToDouble().ToString(formatProvider);
     }
 }
